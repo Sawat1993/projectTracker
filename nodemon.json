@@ -1,0 +1,6 @@
+{
+    "env": {
+        "port": 4000,
+        "mongoPwd": "sawatantra"
+    }
+}
