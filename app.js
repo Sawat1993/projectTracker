@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 //routes
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+const userRoutes = require('./api/routes/users');
 
 mongoose.connect('mongodb://sawatantra:' + process.env.mongoPwd + '@cluster0-shard-00-00-obwaa.mongodb.net:27017,cluster0-shard-00-01-obwaa.mongodb.net:27017,cluster0-shard-00-02-obwaa.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true',
     {
@@ -33,9 +34,10 @@ app.use((req, res, next) => {
 //routes which should handle request
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
-    const error = new Error("Not Found");
+    const error = new Error("Resource Not Found");
     error.status = 404;
     next(error);
 });

@@ -6,7 +6,7 @@ const router = express.Router();
 const Product = require('../models/product');
 
 router.get('/', (req, res, next) => {
-    Product.find().select('_id name').then(docs => {
+    Product.find().select('_id name').exec().then(docs => {//exec() to convert response to promise,save() method by default return promise.
         res.status(200).json({
             count: docs.length,
             products: docs.map(doc => {
@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:productId', (req, res, next) => {
-    Product.findById(req.params.productId).then(doc => {
+    Product.findById(req.params.productId).exec().then(doc => {
         if (doc) res.status(200).json(doc);
         res.status(404).json({ message: 'No Data Found.' });
     }).catch(error => {
@@ -51,7 +51,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.delete('/:productId', (req, res, next) => {
-    Product.remove({ _id: req.params.productId }).then(doc => {
+    Product.remove({ _id: req.params.productId }).exec().then(doc => {
         if (doc.n > 0) res.status(200).json({ message: 'Deleted' });
         res.status(404).json({ message: 'No Data Found.' });
     }).catch(error => {
@@ -67,7 +67,7 @@ router.patch('/:productId', (req, res, next) => {
     for (let ops in req.body) {
         if (allowedUpdate.includes(ops)) updateOps[ops] = req.body[ops];
     }
-    Product.update({ _id: req.params.productId }, { $set: updateOps }).then(doc => {
+    Product.update({ _id: req.params.productId }, { $set: updateOps }).exec().then(doc => {
         if (doc.n > 0) res.status(200).json({ message: 'Updated.' });
         res.status(404).json({ message: 'No Data Found.' });
     }).catch(error => {
