@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const checkAuth = require("../middleware/check-auth"); 
 
 const router = express.Router();
 
@@ -35,7 +36,7 @@ router.get('/:productId', (req, res, next) => {
     })
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     const product = new Product({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -50,7 +51,7 @@ router.post('/', (req, res, next) => {
     })
 });
 
-router.delete('/:productId', (req, res, next) => {
+router.delete('/:productId', checkAuth, (req, res, next) => {
     Product.remove({ _id: req.params.productId }).exec().then(doc => {
         if (doc.n > 0) res.status(200).json({ message: 'Deleted' });
         res.status(404).json({ message: 'No Data Found.' });
@@ -61,7 +62,7 @@ router.delete('/:productId', (req, res, next) => {
     })
 });
 
-router.patch('/:productId', (req, res, next) => {
+router.patch('/:productId', checkAuth, (req, res, next) => {
     let updateOps = {};
     let allowedUpdate = ['name', 'price'];
     for (let ops in req.body) {

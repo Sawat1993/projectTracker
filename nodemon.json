@@ -1,6 +1,7 @@
 {
     "env": {
         "port": 4000,
-        "mongoPwd": "sawatantra"
+        "mongoPwd": "sawatantra",
+        "JWT_KEY": "Tibco"
     }
 }
